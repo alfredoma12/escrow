@@ -1,0 +1,43 @@
+export enum UserRole {
+  BUYER = 'BUYER',
+  SELLER = 'SELLER',
+  ADMIN = 'ADMIN',
+}
+
+export enum OperationStatus {
+  CREADA = 'CREADA',
+  ACEPTADA = 'ACEPTADA',
+  FONDOS_EN_CUSTODIA = 'FONDOS_EN_CUSTODIA',
+  EN_TRANSFERENCIA = 'EN_TRANSFERENCIA',
+  LIBERADA = 'LIBERADA',
+  CANCELADA = 'CANCELADA',
+}
+
+export enum DocumentType {
+  COMPRAVENTA = 'COMPRAVENTA',
+  TRANSFERENCIA = 'TRANSFERENCIA',
+  COMPROBANTE_PAGO = 'COMPROBANTE_PAGO',
+  IDENTIFICACION = 'IDENTIFICACION',
+  OTRO = 'OTRO',
+}
+
+export enum AuditAction {
+  CREATE_OPERATION = 'CREATE_OPERATION',
+  ACCEPT_TERMS = 'ACCEPT_TERMS',
+  DEPOSIT_VALIDATED = 'DEPOSIT_VALIDATED',
+  DOCUMENT_UPLOADED = 'DOCUMENT_UPLOADED',
+  STATUS_CHANGED = 'STATUS_CHANGED',
+  FUNDS_RELEASED = 'FUNDS_RELEASED',
+  FUNDS_RETURNED = 'FUNDS_RETURNED',
+  OPERATION_CANCELLED = 'OPERATION_CANCELLED',
+}
+
+// Transiciones válidas de estados
+export const VALID_STATUS_TRANSITIONS: Record<OperationStatus, OperationStatus[]> = {
+  [OperationStatus.CREADA]: [OperationStatus.ACEPTADA, OperationStatus.CANCELADA],
+  [OperationStatus.ACEPTADA]: [OperationStatus.FONDOS_EN_CUSTODIA, OperationStatus.CANCELADA],
+  [OperationStatus.FONDOS_EN_CUSTODIA]: [OperationStatus.EN_TRANSFERENCIA, OperationStatus.CANCELADA],
+  [OperationStatus.EN_TRANSFERENCIA]: [OperationStatus.LIBERADA],
+  [OperationStatus.LIBERADA]: [],
+  [OperationStatus.CANCELADA]: [],
+};
